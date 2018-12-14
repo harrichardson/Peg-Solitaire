@@ -19,9 +19,9 @@ public class Board {
 	private ArrayList<Integer[]> validHole;
 	private int lastPeg[];
 	private Stack<int[][]> moves;
-	
+
 	Map<Integer, String> demo = new HashMap<Integer, String>();
-	
+
 	public Board(int board[][], Pane root, Label label) {
 		this.board = board;
 		this.root = root;
@@ -122,9 +122,13 @@ public class Board {
 		label.setText(Integer.toString(moves.size() - 1));
 		if (moves.size() != 0) {
 			int move[][] = moves.pop();
+			if (move.length == 1)
+				board[move[0][0]][move[0][1]] = (board[move[0][0]][move[0][1]] == -1) ? 1 : board[move[0][0]][move[0][1]] - 1;
+			else {
 			board[move[0][0]][move[0][1]] = 0;
 			board[move[1][0]][move[1][1]] = 1;
 			board[move[2][0]][move[2][1]] = 1;
+			}
 		}
 
 		setupBoard(false);
@@ -147,6 +151,7 @@ public class Board {
 	}
 
 	public void selectTile(int x, int y) {
+		moves.push(new int[][] {{x, y}});
 		board[x][y] = board[x][y] == 1 ? -1 : board[x][y] + 1;
 		setupBoard(true);
 	}
